@@ -1,6 +1,8 @@
 package com.Akash.jobportal.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,8 +38,18 @@ public class UsersController {
 	}
 	
 	@PostMapping("register/new")
-	public String userRegistration(@Valid Users users) {
+	public String userRegistration(@Valid Users users,Model model) {
 //		System.out.println("User:: "+users);
+		//Bug Fix:Duplicate Email
+		Optional<Users> optionalUsers = usersService.getUserByEmail(users.getEmail());
+		if(optionalUsers.isPresent()) 
+		{   //Bug Fix:Duplicate Email
+			model.addAttribute("error","Email already Existed try to login or register with other Email.!");
+			List<UsersType> usersTypes = usersTypeService.getAll();
+			model.addAttribute("getAllTypes",usersTypes);
+			model.addAttribute("user",new Users());
+			return "register";
+		}
 		usersService.addNew(users);
 		return "dashboard";
 	}

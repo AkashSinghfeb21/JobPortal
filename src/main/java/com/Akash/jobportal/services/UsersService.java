@@ -1,6 +1,7 @@
 package com.Akash.jobportal.services;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,11 @@ public class UsersService {
 		users.setActive(true);
 		users.setRegistrationDate(new Date(System.currentTimeMillis()));
 		return usersRepository.save(users);
+	}
+	
+	//Bug Fix:Duplicate Email
+	public Optional<Users> getUserByEmail(String email){
+		return usersRepository.findByEmail(email);
 	}
 	
 }
