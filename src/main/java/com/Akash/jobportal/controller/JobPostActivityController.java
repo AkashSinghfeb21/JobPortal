@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.Akash.jobportal.services.UsersService;
 
+@Controller
 public class JobPostActivityController {
 	
 	private final UsersService usersService;
@@ -18,7 +20,7 @@ public class JobPostActivityController {
 		this.usersService = usersService;
 	}
 	
-	@GetMapping("/dashboard")
+	@GetMapping("/dashboard/")
 	public String searchJobs(Model model) {
 		
 		Object currentUserProfile = usersService.getCurrentUserProfile();
