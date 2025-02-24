@@ -75,7 +75,7 @@ public class Skills {
 		this.jobSeekerProfile = jobSeekerProfile;
 	}
 
-	@Override
+	
 	public String toString() {
 		return "Skills [id=" + id + ", name=" + name + ", experienceLevel=" + experienceLevel + ", yearsOfExperience="
 				+ yearsOfExperience + ", jobSeekerProfile=" + jobSeekerProfile + "]";

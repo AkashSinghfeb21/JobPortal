@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Akash.jobportal.entity.IRecruiterJobs;
+import com.Akash.jobportal.entity.JobCompany;
 import com.Akash.jobportal.entity.JobLocation;
 import com.Akash.jobportal.entity.JobPostActivity;
 import com.Akash.jobportal.entity.RecruiterJobsDto;
@@ -35,7 +36,19 @@ public class JobPostActivityService {
 	    for(IRecruiterJobs rec: recruiterJobsDtos) {
 	    	JobLocation loc = new JobLocation(rec.getLocationId(),rec.getCity(),
 	    			rec.getState(),rec.getCountry());
+	    	
+	    	JobCompany comp = new JobCompany(rec.getCompanyId(),rec.getName(),"");
+	    	
+	    	recruiterJobsDtoList.add(new RecruiterJobsDto(rec.getTotalCandidates(),rec.getJob_post_id(),
+	    			rec.getJob_title(),loc,comp));
 	    }
+	    return recruiterJobsDtoList;
+	}
+
+	public JobPostActivity getOne(int id) {
+		
+		return jobPostActivityRepository.findById(id).orElseThrow(()->new RuntimeException("Job not found"));
+		
 	}
 
 }
