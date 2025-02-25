@@ -123,7 +123,7 @@ public class RecruiterProfile {
 	@Transient
 	public String getPhotosImagePath() {
 		if(profilePhoto==null)return null;
-		return "/photos/recruiter/"+userAccountId+"/"+profilePhoto;
+		return "photos/recruiter/"+userAccountId+"/"+profilePhoto;
 	}
 
 	@Override
