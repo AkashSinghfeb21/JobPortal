@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.Akash.jobportal.entity.JobPostActivity;
 import com.Akash.jobportal.entity.JobSeekerApply;
 import com.Akash.jobportal.entity.JobSeekerProfile;
+import com.Akash.jobportal.entity.JobSeekerSave;
 import com.Akash.jobportal.entity.RecruiterJobsDto;
 import com.Akash.jobportal.entity.RecruiterProfile;
 import com.Akash.jobportal.entity.Users;
 import com.Akash.jobportal.services.JobPostActivityService;
 import com.Akash.jobportal.services.JobSeekerApplyService;
+import com.Akash.jobportal.services.JobSeekerSaveService;
 import com.Akash.jobportal.services.UsersService;
 
 @Controller
@@ -38,12 +40,16 @@ public class JobPostActivityController {
 	
 	private final JobSeekerApplyService jobSeekerApplyService;
 	
+	private final JobSeekerSaveService jobSeekerSaveService;
+	
 	@Autowired
 	public JobPostActivityController(UsersService usersService,JobPostActivityService
-			jobPostActivityService,JobSeekerApplyService jobSeekerApplyService) {
+			jobPostActivityService,JobSeekerApplyService jobSeekerApplyService,
+			JobSeekerSaveService jobSeekerSaveService) {
 		this.usersService = usersService;
 		this.jobPostActivityService = jobPostActivityService;
 		this.jobSeekerApplyService = jobSeekerApplyService;
+		this.jobSeekerSaveService = jobSeekerSaveService;
 	}
 	
 	@GetMapping("/dashboard/")
@@ -126,8 +132,38 @@ public class JobPostActivityController {
 						.getUserAccountId());
 				model.addAttribute("jobPost",recruiterJobs);
 			}else {
-				List<JobSeekerApply> jobSeekerApplyList = jobSeekerApplyService.getCandidatesJobs((JobSeekerProfile) currentUserProfile);
+				List<JobSeekerApply> jobSeekerApplyList = jobSeekerApplyService.
+						getCandidatesJobs((JobSeekerProfile) currentUserProfile);
 				
+				List<JobSeekerSave> jobSeekerSaveList = jobSeekerSaveService.getCandidatesJob((JobSeekerProfile)currentUserProfile);
+				boolean exist;
+				boolean saved;
+				
+				for(JobPostActivity jobActivity:jobPost) {
+					exist = false;
+					saved = false;
+					for(JobSeekerApply jobSeekerApply:jobSeekerApplyList) {
+						if(Objects.equals(jobActivity.getJobPostId(),jobSeekerApply.getJob().getJobPostId())) {
+							jobActivity.setIsActive(true);
+							exist = true;
+							break;
+						}
+					}
+					for(JobSeekerSave jobSeekerSave:jobSeekerSaveList) {
+						if(Objects.equals(jobActivity.getJobPostId(),jobSeekerSave.getJob().getJobPostId())){
+							jobActivity.setIsSaved(true);
+							saved=true;
+							break;
+						}
+					}
+					if(!exist) {
+						jobActivity.setIsActive(false);
+					}
+					if(!saved) {
+						jobActivity.setIsSaved(false);
+					}
+					model.addAttribute("jobPost",jobPost);
+				}
 			}
 		}
 		
