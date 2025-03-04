@@ -1,74 +1,66 @@
 package com.Akash.jobportal.entity;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import java.io.Serializable;
 
 @Entity
 @Table(uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"userId","job"})
+        @UniqueConstraint(columnNames = {"userId", "job"})
 })
-public class JobSeekerSave implements Serializable{
-       
-	@Id
+public class JobSeekerSave implements Serializable {
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="userId",referencedColumnName="user_account_id")
-	private JobSeekerProfile userId;
-	
-	@ManyToOne(cascade= CascadeType.ALL)
-	@JoinColumn(name="job",referencedColumnName="jobPostId")
-	private JobPostActivity job;
-	
-	public JobSeekerSave() {
-		
-	}
+    private Integer id;
 
-	public JobSeekerSave(Integer id, JobSeekerProfile userId, JobPostActivity job) {
-		this.id = id;
-		this.userId = userId;
-		this.job = job;
-	}
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId", referencedColumnName = "user_account_id")
+    private JobSeekerProfile userId;
 
-	public Integer getId() {
-		return id;
-	}
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "job", referencedColumnName = "jobPostId")
+    private JobPostActivity job;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public JobSeekerSave() {
+    }
 
-	public JobSeekerProfile getUserId() {
-		return userId;
-	}
+    public JobSeekerSave(Integer id, JobSeekerProfile userId, JobPostActivity job) {
+        this.id = id;
+        this.userId = userId;
+        this.job = job;
+    }
 
-	public void setUserId(JobSeekerProfile userId) {
-		this.userId = userId;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public JobPostActivity getJob() {
-		return job;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setJob(JobPostActivity job) {
-		this.job = job;
-	}
+    public JobSeekerProfile getUserId() {
+        return userId;
+    }
 
-	@Override
-	public String toString() {
-		return "JobSeekerSave [id=" + id + ", userId=" + userId.toString() + 
-				", jobPostId=" + job.toString() + "]";
-	}
-	
-	
+    public void setUserId(JobSeekerProfile userId) {
+        this.userId = userId;
+    }
+
+    public JobPostActivity getJob() {
+        return job;
+    }
+
+    public void setJob(JobPostActivity job) {
+        this.job = job;
+    }
+
+    @Override
+    public String toString() {
+        return "JobSeekerSave{" +
+                "id=" + id +
+                ", userId=" + userId.toString() +
+                ", job=" + job.toString() +
+                '}';
+    }
 }
